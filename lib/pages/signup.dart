@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app_project/main.dart';
+import 'package:todo_app_project/pages/login.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -153,7 +154,7 @@ class _SignupState extends State<Signup> {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const MyApp(),
+                                builder: (context) => const Login(),
                               ),
                             );
                           },
