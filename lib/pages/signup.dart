@@ -90,8 +90,8 @@ class _SignupState extends State<Signup> {
       'last_name': lastName,
       'email': email,
       'age': age,
-      'todo': [{}],
-      'done': [{}]
+      'todo': [],
+      'done': []
     });
   }
 
