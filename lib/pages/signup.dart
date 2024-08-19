@@ -41,16 +41,20 @@ class _SignupState extends State<Signup> {
 
     try {
       if (passwordMatches()) {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        UserCredential userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
         );
 
-        addUserDetails(
+        String userId = userCredential.user!.uid;
+
+        await addUserDetails(
             _firstNameController.text.trim(),
             _lastNameController.text.trim(),
             _emailController.text.trim(),
-            int.parse(_ageController.text.trim()));
+            int.parse(_ageController.text.trim()),
+            userId);
 
         Navigator.pushReplacement(
           context,
@@ -83,9 +87,9 @@ class _SignupState extends State<Signup> {
         _confirmPasswordController.text.trim();
   }
 
-  Future addUserDetails(
-      String firstName, String lastName, String email, int age) async {
-    await FirebaseFirestore.instance.collection('users').add({
+  Future addUserDetails(String firstName, String lastName, String email,
+      int age, String userId) async {
+    await FirebaseFirestore.instance.collection('users').doc(userId).set({
       'first_name': firstName,
       'last_name': lastName,
       'email': email,
