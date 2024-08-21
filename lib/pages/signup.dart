@@ -64,7 +64,7 @@ class _SignupState extends State<Signup> {
         );
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('User created successfully, login now'),
+            content: Text('User created successfully'),
             duration: Duration(seconds: 2),
           ),
         );
@@ -95,7 +95,8 @@ class _SignupState extends State<Signup> {
       'email': email,
       'age': age,
       'todo': [],
-      'done': []
+      'done': [],
+      'dailys': []
     });
   }
 
