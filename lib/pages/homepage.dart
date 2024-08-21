@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_app_project/pages/dailys.dart';
 import 'package:todo_app_project/pages/history.dart';
 import 'package:todo_app_project/pages/login.dart';
 import 'package:todo_app_project/pages/todoDetails.dart';
@@ -117,7 +118,14 @@ class _HomepageState extends State<Homepage> {
             ListTile(
               leading: const Icon(Icons.event_repeat),
               title: const Text('Daily Todos'),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const Dailys(),
+                  ),
+                );
+              },
             ),
             ListTile(
               leading: const Icon(Icons.bar_chart),
