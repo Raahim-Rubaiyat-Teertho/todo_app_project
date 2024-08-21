@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_app_project/pages/history.dart';
 import 'package:todo_app_project/pages/login.dart';
+import 'package:todo_app_project/pages/todoDetails.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -37,6 +39,8 @@ class _HomepageState extends State<Homepage> {
           {'task': _titleController.text.trim(), 'time': DateTime.now()}
         ])
       });
+
+      _titleController.clear();
     }
   }
 
@@ -58,13 +62,13 @@ class _HomepageState extends State<Homepage> {
                 ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Task Created Successfully')));
               },
-              child: Text('Add'),
+              child: const Text('Add'),
             ),
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
           ],
         );
@@ -123,7 +127,14 @@ class _HomepageState extends State<Homepage> {
             ListTile(
               leading: const Icon(Icons.history),
               title: const Text('History'),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const History(),
+                  ),
+                );
+              },
             ),
             ListTile(
               leading: const Icon(Icons.logout),
@@ -176,7 +187,13 @@ class _HomepageState extends State<Homepage> {
                     ),
                   ),
                   subtitle: Text(d.toString()),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                TodoDetails(todo_work: task, todo_time: time)));
+                  },
                 );
               },
             );
