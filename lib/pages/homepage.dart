@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:todo_app_project/elements/userDrawerHeader.dart';
 import 'package:todo_app_project/pages/dailys.dart';
 import 'package:todo_app_project/pages/history.dart';
@@ -80,6 +81,56 @@ class _HomepageState extends State<Homepage> {
         .collection('users')
         .doc(user.uid)
         .update({'todo': todos});
+  }
+
+  Future<void> markAsDone(String task, Timestamp time) async {
+    try {
+      FirebaseFirestore.instance.collection('users').doc(user.uid).update({
+        'todo': FieldValue.arrayRemove([
+          {'task': task, 'time': time}
+        ])
+      });
+
+      FirebaseFirestore.instance.collection('users').doc(user.uid).update({
+        'done': FieldValue.arrayUnion([
+          {'task': task, 'time': time}
+        ])
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Task completed'),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Something went wrong. Please try again.'),
+        ),
+      );
+    }
+  }
+
+  Future<void> removeTodo(String task, Timestamp time) async {
+    try {
+      FirebaseFirestore.instance.collection('users').doc(user.uid).update({
+        'todo': FieldValue.arrayRemove([
+          {'task': task, 'time': time}
+        ])
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Task removed'),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Something went wrong. Please try again.'),
+        ),
+      );
+    }
   }
 
   @override
@@ -195,27 +246,47 @@ class _HomepageState extends State<Homepage> {
                 var time = todos[index]['time'];
                 DateTime d = time.toDate();
 
-                return ListTile(
-                  key: ValueKey(
-                      todos[index]), // Ensures the item is uniquely identified
-                  title: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                    child: Text(
-                      task,
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
+                return Slidable(
+                  key: ValueKey(todos[index]),
+                  startActionPane:
+                      ActionPane(motion: const StretchMotion(), children: [
+                    SlidableAction(
+                      onPressed: ((context) async {
+                        await markAsDone(task, time);
+                      }),
+                      backgroundColor: Colors.green,
+                      icon: Icons.done,
+                    ),
+                    SlidableAction(
+                      onPressed: ((context) async {
+                        await removeTodo(task, time);
+                      }),
+                      backgroundColor: Colors.red,
+                      icon: Icons.delete,
+                    )
+                  ]),
+                  child: ListTile(
+                    // key: ValueKey(todos[
+                    //     index]), // Ensures the item is uniquely identified
+                    title: Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                      child: Text(
+                        task,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
+                    subtitle: Text(d.toString()),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TodoDetails(
+                                  todo_work: task, todo_time: time)));
+                    },
                   ),
-                  subtitle: Text(d.toString()),
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                TodoDetails(todo_work: task, todo_time: time)));
-                  },
                 );
               },
             );
