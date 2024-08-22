@@ -16,10 +16,10 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   final user = FirebaseAuth.instance.currentUser!;
   final _titleController = TextEditingController();
+  List<dynamic> todos = [];
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _titleController.dispose();
   }
@@ -57,7 +57,6 @@ class _HomepageState extends State<Homepage> {
           actions: [
             TextButton(
               onPressed: () async {
-                // Handle adding the new todo to Firestore
                 await addToFirestore();
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -74,6 +73,13 @@ class _HomepageState extends State<Homepage> {
           ],
         );
       });
+
+  Future<void> updateTodosInFirestore() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .update({'todo': todos});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -171,19 +177,30 @@ class _HomepageState extends State<Homepage> {
           }
 
           var userData = snapshot.data!.data() as Map<String, dynamic>?;
-          var todo = userData?['todo'];
+          todos = userData?['todo'] ?? [];
 
-          if (todo.length == 0) {
+          if (todos.isEmpty) {
             return const Center(child: Text('No tasks found'));
           } else {
-            return ListView.builder(
-              itemCount: todo.length,
+            return ReorderableListView.builder(
+              itemCount: todos.length,
+              onReorder: (oldIndex, newIndex) async {
+                if (newIndex > oldIndex) {
+                  newIndex -= 1;
+                }
+                final item = todos.removeAt(oldIndex);
+                todos.insert(newIndex, item);
+                setState(() {});
+                await updateTodosInFirestore();
+              },
               itemBuilder: (context, index) {
-                var task = todo[index]['task'];
-                var time = todo[index]['time'];
+                var task = todos[index]['task'];
+                var time = todos[index]['time'];
                 DateTime d = time.toDate();
 
                 return ListTile(
+                  key: ValueKey(
+                      todos[index]), // Ensures the item is uniquely identified
                   title: Padding(
                     padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                     child: Text(
