@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_app_project/elements/userDrawerHeader.dart';
 import 'package:todo_app_project/pages/dailys.dart';
 import 'package:todo_app_project/pages/history.dart';
 import 'package:todo_app_project/pages/login.dart';
@@ -103,11 +104,7 @@ class _HomepageState extends State<Homepage> {
         child: ListView(
           children: [
             const DrawerHeader(
-              child: Center(
-                  child: Text(
-                'OPTIONS',
-                style: TextStyle(fontWeight: FontWeight.w500, letterSpacing: 5),
-              )),
+              child: Center(child: UserDrawerHeader()),
             ),
             ListTile(
               leading: const Icon(Icons.home),
