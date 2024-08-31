@@ -46,6 +46,33 @@ class _HomepageState extends State<Homepage> {
       });
 
       _titleController.clear();
+
+      final todoDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
+
+      final todoList = todoDoc.data()?['todo'] as List<dynamic>?;
+
+      if (todoList!.isNotEmpty) {
+        AwesomeNotifications().createNotification(
+          content: NotificationContent(
+              id: 10,
+              channelKey: 'basic_channel',
+              title: 'Currently prioritized todos pending!',
+              body: todoList[0]['task'],
+              autoDismissible: false),
+        );
+      } else {
+        AwesomeNotifications().createNotification(
+          content: NotificationContent(
+              id: 10,
+              channelKey: 'basic_channel',
+              title: 'Congratulations!',
+              body: 'You have completed all your tasks!',
+              autoDismissible: false),
+        );
+      }
     }
   }
 
