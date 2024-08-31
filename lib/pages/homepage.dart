@@ -1,5 +1,7 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:todo_app_project/elements/userDrawerHeader.dart';
@@ -80,7 +82,18 @@ class _HomepageState extends State<Homepage> {
     await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
-        .update({'todo': todos});
+        .update({'todo': todos}).then(
+      (value) {
+        AwesomeNotifications().createNotification(
+          content: NotificationContent(
+              id: 10,
+              channelKey: 'basic_channel',
+              title: 'Currently prioritized todos pending!',
+              body: todos[0]['task'],
+              autoDismissible: false),
+        );
+      },
+    );
   }
 
   Future<void> markAsDone(String task, Timestamp time) async {
@@ -102,6 +115,33 @@ class _HomepageState extends State<Homepage> {
           content: Text('Task completed'),
         ),
       );
+
+      final todoDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
+
+      final todoList = todoDoc.data()?['todo'] as List<dynamic>?;
+
+      if (todoList!.isNotEmpty) {
+        AwesomeNotifications().createNotification(
+          content: NotificationContent(
+              id: 10,
+              channelKey: 'basic_channel',
+              title: 'Currently prioritized todos pending!',
+              body: todoList[0]['task'],
+              autoDismissible: false),
+        );
+      } else {
+        AwesomeNotifications().createNotification(
+          content: NotificationContent(
+              id: 10,
+              channelKey: 'basic_channel',
+              title: 'Congratulations!',
+              body: 'You have completed all your tasks!',
+              autoDismissible: false),
+        );
+      }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -124,6 +164,33 @@ class _HomepageState extends State<Homepage> {
           content: Text('Task removed'),
         ),
       );
+
+      final todoDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
+
+      final todoList = todoDoc.data()?['todo'] as List<dynamic>?;
+
+      if (todoList!.isNotEmpty) {
+        AwesomeNotifications().createNotification(
+          content: NotificationContent(
+              id: 10,
+              channelKey: 'basic_channel',
+              title: 'Currently prioritized todos pending!',
+              body: todoList[0]['task'],
+              autoDismissible: false),
+        );
+      } else {
+        AwesomeNotifications().createNotification(
+          content: NotificationContent(
+              id: 10,
+              channelKey: 'basic_channel',
+              title: 'Congratulations!',
+              body: 'You have completed all your tasks!',
+              autoDismissible: false),
+        );
+      }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
