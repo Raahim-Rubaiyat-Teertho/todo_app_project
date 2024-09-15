@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class Dailys extends StatefulWidget {
   const Dailys({super.key});
@@ -32,6 +33,25 @@ class DailysState extends State<Dailys> {
       _dailyTodoController.clear();
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Daily Todo added successfully"),
+      ));
+    }
+  }
+
+  Future<void> removeDaily(String title) async {
+    try {
+      FirebaseFirestore.instance.collection('users').doc(user.uid).update({
+        'dailys': FieldValue.arrayRemove([
+          {
+            'title': title,
+          }
+        ])
+      });
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Daily Todo removed successfully"),
+      ));
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Error while removing daily todo"),
       ));
     }
   }
@@ -104,12 +124,29 @@ class DailysState extends State<Dailys> {
                 itemCount: dailys.length,
                 itemBuilder: (context, index) {
                   var daily = dailys[index] as Map<String, dynamic>;
-                  return ListTile(
-                    title: Text(daily['title']),
-                    onTap: () {
-                      // Navigate to the daily detail screen
-                    },
-                    subtitle: const Text('Click for more options'),
+                  return Slidable(
+                    key: ValueKey(dailys[index]),
+                    startActionPane: ActionPane(
+                      motion: const StretchMotion(),
+                      children: [
+                        SlidableAction(
+                          onPressed: ((context) async {
+                            // await removeDaily(title);
+                            var title = daily['title'];
+                            await removeDaily(title);
+                          }),
+                          backgroundColor: Colors.red,
+                          icon: Icons.delete,
+                        )
+                      ],
+                    ),
+                    child: ListTile(
+                      title: Text(daily['title']),
+                      onTap: () {
+                        // Navigate to the daily detail screen
+                      },
+                      subtitle: const Text('Click for more options'),
+                    ),
                   );
                 },
               );
