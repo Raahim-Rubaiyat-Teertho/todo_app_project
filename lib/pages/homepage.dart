@@ -360,8 +360,9 @@ class _HomepageState extends State<Homepage> {
                     )
                   ]),
                   child: ListTile(
-                    // key: ValueKey(todos[
-                    //     index]), // Ensures the item is uniquely identified
+                    shape: const RoundedRectangleBorder(
+                        side: BorderSide(width: 0.5)),
+                    trailing: const Icon(Icons.reorder_outlined),
                     title: Padding(
                       padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                       child: Text(

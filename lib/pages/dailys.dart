@@ -141,11 +141,12 @@ class DailysState extends State<Dailys> {
                       ],
                     ),
                     child: ListTile(
+                      shape: const RoundedRectangleBorder(
+                          side: BorderSide(width: 0.5)),
                       title: Text(daily['title']),
                       onTap: () {
                         // Navigate to the daily detail screen
                       },
-                      subtitle: const Text('Click for more options'),
                     ),
                   );
                 },
