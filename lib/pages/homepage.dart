@@ -8,6 +8,7 @@ import 'package:todo_app_project/elements/userDrawerHeader.dart';
 import 'package:todo_app_project/pages/dailys.dart';
 import 'package:todo_app_project/pages/history.dart';
 import 'package:todo_app_project/pages/login.dart';
+import 'package:todo_app_project/pages/stats.dart';
 import 'package:todo_app_project/pages/todoDetails.dart';
 
 class Homepage extends StatefulWidget {
@@ -278,7 +279,10 @@ class _HomepageState extends State<Homepage> {
             ListTile(
               leading: const Icon(Icons.bar_chart),
               title: const Text('Stats'),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Stats()));
+              },
             ),
             ListTile(
               leading: const Icon(Icons.history),
