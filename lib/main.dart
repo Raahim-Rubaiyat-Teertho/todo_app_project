@@ -13,9 +13,12 @@ void main() async {
         NotificationChannel(
             channelKey: 'basic_channel',
             channelName: 'Basic Notification',
-            channelDescription: 'Notification channel description')
+            channelDescription: 'Notification channel description',
+            importance: NotificationImportance.Max,
+            locked: true)
       ],
       debug: true);
+
   runApp(const MaterialApp(
     home: MyApp(),
     debugShowCheckedModeBanner: false,

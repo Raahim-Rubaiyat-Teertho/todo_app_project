@@ -10,6 +10,7 @@ import 'package:todo_app_project/pages/history.dart';
 import 'package:todo_app_project/pages/login.dart';
 import 'package:todo_app_project/pages/stats.dart';
 import 'package:todo_app_project/pages/todoDetails.dart';
+import 'package:awesome_notifications/android_foreground_service.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -56,23 +57,62 @@ class _HomepageState extends State<Homepage> {
       final todoList = todoDoc.data()?['todo'] as List<dynamic>?;
 
       if (todoList!.isNotEmpty) {
-        AwesomeNotifications().createNotification(
-          content: NotificationContent(
-              id: 10,
-              channelKey: 'basic_channel',
-              title: 'Currently prioritized todos pending!',
-              body: todoList[0]['task'],
-              autoDismissible: false),
-        );
+        // AwesomeNotifications().createNotification(
+        //   content: NotificationContent(
+        //       id: 10,
+        //       channelKey: 'basic_channel',
+        //       title: 'Currently prioritized todos pending!',
+        //       body: todoList[0]['task'],
+        //       autoDismissible: false),
+        // );
+
+        AndroidForegroundService.startAndroidForegroundService(
+            foregroundStartMode: ForegroundStartMode.stick,
+            foregroundServiceType: ForegroundServiceType.none,
+            content: NotificationContent(
+                id: 10,
+                body: todoList[0]['task'],
+                title: 'Currently Prioritized Todos Pending',
+                channelKey: 'basic_channel',
+                autoDismissible: false,
+                locked: true,
+                notificationLayout: NotificationLayout.Default,
+                category: NotificationCategory.Service),
+            actionButtons: [
+              NotificationActionButton(
+                key: 'SHOW_SERVICE_DETAILS',
+                label: 'Show details',
+                autoDismissible: false,
+              ),
+            ]);
       } else {
-        AwesomeNotifications().createNotification(
-          content: NotificationContent(
-              id: 10,
-              channelKey: 'basic_channel',
-              title: 'Congratulations!',
-              body: 'You have completed all your tasks!',
-              autoDismissible: false),
-        );
+        // AwesomeNotifications().createNotification(
+        //   content: NotificationContent(
+        //       id: 10,
+        //       channelKey: 'basic_channel',
+        //       title: 'Congratulations!',
+        //       body: 'You have completed all your tasks!',
+        //       autoDismissible: false),
+        // );
+        AndroidForegroundService.startAndroidForegroundService(
+            foregroundStartMode: ForegroundStartMode.stick,
+            foregroundServiceType: ForegroundServiceType.none,
+            content: NotificationContent(
+                id: 10,
+                body: todoList[0]['task'],
+                title: 'Currently Prioritized Todos Pending',
+                channelKey: 'basic_channel',
+                autoDismissible: false,
+                locked: true,
+                notificationLayout: NotificationLayout.Default,
+                category: NotificationCategory.Service),
+            actionButtons: [
+              NotificationActionButton(
+                key: 'SHOW_SERVICE_DETAILS',
+                label: 'Show details',
+                autoDismissible: false,
+              ),
+            ]);
       }
     }
   }
@@ -112,14 +152,34 @@ class _HomepageState extends State<Homepage> {
         .doc(user.uid)
         .update({'todo': todos}).then(
       (value) {
-        AwesomeNotifications().createNotification(
-          content: NotificationContent(
-              id: 10,
-              channelKey: 'basic_channel',
-              title: 'Currently prioritized todos pending!',
-              body: todos[0]['task'],
-              autoDismissible: false),
-        );
+        // AwesomeNotifications().createNotification(
+        //   content: NotificationContent(
+        //       id: 10,
+        //       channelKey: 'basic_channel',
+        //       title: 'Currently prioritized todos pending!',
+        //       body: todos[0]['task'],
+        //       autoDismissible: false),
+        // );
+
+        AndroidForegroundService.startAndroidForegroundService(
+            foregroundStartMode: ForegroundStartMode.stick,
+            foregroundServiceType: ForegroundServiceType.none,
+            content: NotificationContent(
+                id: 10,
+                body: todos[0]['task'],
+                title: 'Currently Prioritized Todos Pending',
+                channelKey: 'basic_channel',
+                autoDismissible: false,
+                locked: true,
+                notificationLayout: NotificationLayout.Default,
+                category: NotificationCategory.Service),
+            actionButtons: [
+              NotificationActionButton(
+                key: 'SHOW_SERVICE_DETAILS',
+                label: 'Show details',
+                autoDismissible: false,
+              ),
+            ]);
       },
     );
   }
@@ -152,23 +212,63 @@ class _HomepageState extends State<Homepage> {
       final todoList = todoDoc.data()?['todo'] as List<dynamic>?;
 
       if (todoList!.isNotEmpty) {
-        AwesomeNotifications().createNotification(
-          content: NotificationContent(
-              id: 10,
-              channelKey: 'basic_channel',
-              title: 'Currently prioritized todos pending!',
-              body: todoList[0]['task'],
-              autoDismissible: false),
-        );
+        // AwesomeNotifications().createNotification(
+        //   content: NotificationContent(
+        //       id: 10,
+        //       channelKey: 'basic_channel',
+        //       title: 'Currently prioritized todos pending!',
+        //       body: todoList[0]['task'],
+        //       autoDismissible: false),
+        // );
+
+        AndroidForegroundService.startAndroidForegroundService(
+            foregroundStartMode: ForegroundStartMode.stick,
+            foregroundServiceType: ForegroundServiceType.none,
+            content: NotificationContent(
+                id: 10,
+                body: todoList[0]['task'],
+                title: 'Currently Prioritized Todos Pending',
+                channelKey: 'basic_channel',
+                autoDismissible: false,
+                locked: true,
+                notificationLayout: NotificationLayout.Default,
+                category: NotificationCategory.Service),
+            actionButtons: [
+              NotificationActionButton(
+                key: 'SHOW_SERVICE_DETAILS',
+                label: 'Show details',
+                autoDismissible: false,
+              ),
+            ]);
       } else {
-        AwesomeNotifications().createNotification(
-          content: NotificationContent(
-              id: 10,
-              channelKey: 'basic_channel',
-              title: 'Congratulations!',
-              body: 'You have completed all your tasks!',
-              autoDismissible: false),
-        );
+        // AwesomeNotifications().createNotification(
+        //   content: NotificationContent(
+        //       id: 10,
+        //       channelKey: 'basic_channel',
+        //       title: 'Congratulations!',
+        //       body: 'You have completed all your tasks!',
+        //       autoDismissible: false),
+        // );
+
+        AndroidForegroundService.startAndroidForegroundService(
+            foregroundStartMode: ForegroundStartMode.stick,
+            foregroundServiceType: ForegroundServiceType.none,
+            content: NotificationContent(
+                id: 10,
+                body: todoList[0]['task'],
+                title: 'Currently Prioritized Todos Pending',
+                channelKey: 'basic_channel',
+                autoDismissible: false,
+                locked: true,
+                notificationLayout: NotificationLayout.Default,
+                category: NotificationCategory.Service),
+            actionButtons: [
+              NotificationActionButton(
+                key: 'SHOW_SERVICE_DETAILS',
+                label: 'Show details',
+                autoDismissible: false,
+              ),
+            ]);
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -201,23 +301,62 @@ class _HomepageState extends State<Homepage> {
       final todoList = todoDoc.data()?['todo'] as List<dynamic>?;
 
       if (todoList!.isNotEmpty) {
-        AwesomeNotifications().createNotification(
-          content: NotificationContent(
-              id: 10,
-              channelKey: 'basic_channel',
-              title: 'Currently prioritized todos pending!',
-              body: todoList[0]['task'],
-              autoDismissible: false),
-        );
+        // AwesomeNotifications().createNotification(
+        //   content: NotificationContent(
+        //       id: 10,
+        //       channelKey: 'basic_channel',
+        //       title: 'Currently prioritized todos pending!',
+        //       body: todoList[0]['task'],
+        //       autoDismissible: false),
+        // );
+        AndroidForegroundService.startAndroidForegroundService(
+            foregroundStartMode: ForegroundStartMode.stick,
+            foregroundServiceType: ForegroundServiceType.none,
+            content: NotificationContent(
+                id: 10,
+                body: todoList[0]['task'],
+                title: 'Currently Prioritized Todos Pending',
+                channelKey: 'basic_channel',
+                autoDismissible: false,
+                locked: true,
+                notificationLayout: NotificationLayout.Default,
+                category: NotificationCategory.Service),
+            actionButtons: [
+              NotificationActionButton(
+                key: 'SHOW_SERVICE_DETAILS',
+                label: 'Show details',
+                autoDismissible: false,
+              ),
+            ]);
       } else {
-        AwesomeNotifications().createNotification(
-          content: NotificationContent(
-              id: 10,
-              channelKey: 'basic_channel',
-              title: 'Congratulations!',
-              body: 'You have completed all your tasks!',
-              autoDismissible: false),
-        );
+        // AwesomeNotifications().createNotification(
+        //   content: NotificationContent(
+        //       id: 10,
+        //       channelKey: 'basic_channel',
+        //       title: 'Congratulations!',
+        //       body: 'You have completed all your tasks!',
+        //       autoDismissible: false),
+        // );
+
+        AndroidForegroundService.startAndroidForegroundService(
+            foregroundStartMode: ForegroundStartMode.stick,
+            foregroundServiceType: ForegroundServiceType.none,
+            content: NotificationContent(
+                id: 10,
+                body: todoList[0]['task'],
+                title: 'Currently Prioritized Todos Pending',
+                channelKey: 'basic_channel',
+                autoDismissible: false,
+                locked: true,
+                notificationLayout: NotificationLayout.Default,
+                category: NotificationCategory.Service),
+            actionButtons: [
+              NotificationActionButton(
+                key: 'SHOW_SERVICE_DETAILS',
+                label: 'Show details',
+                autoDismissible: false,
+              ),
+            ]);
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
