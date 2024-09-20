@@ -3,7 +3,7 @@
 *.log
 *.pyc
 *.swp
-.firebase
+firebase.json
 .DS_Store
 .atom/
 .buildlog/
